@@ -41,8 +41,8 @@ public:
                         }
                         else if (wordList.find(s) != wordList.end()) {
                             if (tmpMap.find(s) != tmpMap.end()) {
-                                vector<vector<string>> tmp = tmpMap.find(s)->second;
-                                for (auto x : str->second) {x.push_back(s); tmp.push_back(x);}
+                                // vector<vector<string>> tmp = tmpMap.find(s)->second;
+                                for (auto x : str->second) {x.push_back(s); tmpMap.find(s)->second.push_back(x);}
                             } else {
                                 vector<vector<string>> tmp;
                                 for (auto x : str->second) {x.push_back(s); tmp.push_back(x);}
