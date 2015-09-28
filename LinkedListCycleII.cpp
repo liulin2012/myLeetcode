@@ -45,3 +45,38 @@ public:
         return fast;
     }
 };
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ * https://leetcode.com/discuss/16567/concise-solution-using-with-detailed-alogrithm-description
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if (head == NULL || head->next == NULL)
+        return NULL;
+
+        ListNode *slow  = head;
+        ListNode *fast  = head;
+
+        while (fast->next && fast->next->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+            if (slow == fast) { // there is a cycle
+                fast = head;
+                while(slow != fast) {               // found the entry location
+                slow  = slow->next;
+                fast = fast->next;
+            }
+            return fast;
+            }
+        }
+        return NULL;                      
+    }
+};
