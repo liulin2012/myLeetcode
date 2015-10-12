@@ -45,3 +45,18 @@ public:
         return obstacleGrid[obstacleGrid.size() - 1][obstacleGrid[0].size() - 1];
     }
 };
+
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size();
+        vector<int> cur(m, 0);
+        cur[0] = 1;
+        for (int i = 0; i < obstacleGrid[0].size(); i++) 
+            for (int j = 0; j < obstacleGrid.size(); j++) {
+                if (obstacleGrid[j][i] == 1) cur[j] = 0;
+                else cur[j] += cur[j - 1];
+            }
+        return cur[m - 1];
+    }
+};
