@@ -24,3 +24,24 @@ public:
         return res;
     }
 };
+
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& height) {
+        if (height.size() == 0) return 0;
+        int res = 0;
+        height.push_back(0);
+        stack<int> col;
+        for (int i = 0; i < height.size(); i++) {
+            while(!col.empty() && height[col.top()] > height[i]) {
+                int h = height[col.top()];
+                col.pop();
+                int length = col.empty() ? -1 : col.top();
+                res = max(res, h*(i-length-1));
+            }
+            col.push(i);
+        }
+        return res;
+    }
+};
