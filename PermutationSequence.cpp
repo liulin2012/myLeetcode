@@ -26,3 +26,25 @@ public:
         }
     }
 };
+
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        vector<int> numSet;
+        int sum = 1;
+        for (int i = 1; i <= n; i++) {
+            numSet.push_back(i);
+            sum *= i;
+        }
+        string res;
+        k--;
+        for (int i = 0; i < n; i++) {
+            sum /= n - i;
+            int tmp = k/sum;
+            res.push_back(numSet[tmp]+'0');
+            numSet.erase(numSet.begin()+tmp);
+            k %= sum;
+        }
+        return res;
+    }
+};
