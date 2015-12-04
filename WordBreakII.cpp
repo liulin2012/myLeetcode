@@ -1,40 +1,37 @@
 class Solution {
 public:
+    unordered_map<string , vector<string>> dpHash;
     vector<string> wordBreak(string s, unordered_set<string>& wordDict) {
+
+        // time complexity is 2^n
+
+        vector<string> result;
+
+        //memorize the result, don't do the redundent work
+        if (dpHash.find(s) != dpHash.end()) {
+            return dpHash[s];
+        }
+
+        // Check should we go further?
+        bool notFound = true;
+        for (int i = s.size() - 1; i >=0; --i) {   // key here
+            if (wordDict.find(s.substr(i)) != wordDict.end()) {
+                notFound = false;
+                break;
+            } 
+        }
+        if (notFound) { return result; }
         
-        vector<string> res;
-        if (s.size() == 0) return res;
-        vector<vector<string>> index(s.size());
-        for (int i = 0; i < s.size(); i++) {
-            for (int j = i; j >= 0; j--) {
-                if (wordDict.find(s.substr(j, i-j+1)) != wordDict.end()) {
-                    if (j == 0 || !index[j - 1].empty()) {
-                        index[i].push_back(s.substr(j, i-j+1));
-                    }
-               }
+        // Further
+        if (wordDict.find(s) != wordDict.end()) result.push_back(s);
+        for (int i = s.size() - 1; i > 0; i--) {
+            if (wordDict.find(s.substr(0, i)) != wordDict.end()) {
+                vector<string> subRes = wordBreak(s.substr(i, s.size()), wordDict);
+                for (auto str : subRes)
+                    result.push_back(s.substr(0, i) + " " + str);
             }
         }
-        stack<string> tmp;
-        DFS(index, index.size() - 1, res, tmp);
-        
-        return res;
-    }
-    
-    void DFS(vector<vector<string>> &index, int cur, vector<string> &res, stack<string> one) {
-        if (cur == -1) {
-            string tmp;
-            while (!one.empty()) {
-                tmp += one.top() + " ";
-                one.pop();
-            }
-            tmp.pop_back();
-            res.push_back(tmp);
-        } else {
-            for (int i = 0; i < index[cur].size(); i++) {
-                one.push(index[cur][i]);
-                DFS(index, cur - index[cur][i].size(), res, one);
-                one.pop();
-            }
-        }
+        dpHash[s] = result;
+        return result;
     }
 };
